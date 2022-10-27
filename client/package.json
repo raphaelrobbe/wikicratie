@@ -4,6 +4,7 @@
   "description": "Wikicratie - Constitution Provisoire de Transition - Client",
   "homepage": "https://raf-prag.com/CPT/",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@react-icons/all-files": "^4.1.0",
     "@testing-library/jest-dom": "^5.16.5",
