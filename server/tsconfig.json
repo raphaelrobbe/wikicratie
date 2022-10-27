@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es6",
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "downlevelIteration": true ,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "strictNullChecks": false
+  },
+  "include": [
+    "src/**/*.ts", "../common/**/*.ts", "../client/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
