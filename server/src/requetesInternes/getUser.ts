@@ -1,4 +1,4 @@
-import { sqlSelectAllFromTable, sqlSelectFromTable } from "sqlRequests.ts/basicRequests";
+import { sqlSelectAllFromTable, sqlSelectFromTable } from "sqlRequests/basicRequests";
 import { User } from "../../../common/types/users";
 
 export const getUser = async (

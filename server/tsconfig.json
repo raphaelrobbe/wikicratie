@@ -24,7 +24,7 @@
   },
   "include": [
     "src/**/*.ts", "../common/**/*.ts", "../client/**/*.ts"
-  ],
+, "src/sqlRequests"  ],
   "exclude": [
     "node_modules"
   ]

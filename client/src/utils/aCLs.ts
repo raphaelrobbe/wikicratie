@@ -109,7 +109,7 @@ const ACLDetailleeConnecteCompteTraitementFichiersUpdate: ACLDetaillee = {
   ACLDetaillee: [ACLTraitementParticulierUpdate],
 };
 
-const ACLDetailleeConseillerTraitementTresParticulier: ACLDetaillee = {
+const ACLDetailleeAdminTraitementTresParticulier: ACLDetaillee = {
   ACLGlobale: ACLAdmin,
   ACLDetaillee: [ACLTraitementTresParticulier],
 }
@@ -166,8 +166,6 @@ export const ACLsDetaillees: ListeACLsDetaillees = {
 
 
 
-  genereLienActivationCompte: ACLDetailleeConseillerTraitementTresParticulier,
-  createAccesUser: ACLDetailleeConseillerTraitementTresParticulier,
 
 
   //////////////////////
@@ -175,6 +173,10 @@ export const ACLsDetaillees: ListeACLsDetaillees = {
   //////////////////////
   // global
   getLogs: ACLDetailleeAdmin,
+  genereLienActivationCompte: ACLDetailleeAdminTraitementTresParticulier,
+  createAccesUser: ACLDetailleeAdminTraitementTresParticulier,
+  hasUserAcces: ACLDetailleeAdminTraitementTresParticulier,
+  updateUserUserActif: ACLDetailleeAdminTraitementTresParticulier,
   // gestion des comptes
 };
 
@@ -195,6 +197,6 @@ export const requestsTraitementTresParticulier = acceptedRequests.filter(
 export const requestsTraitementParticulier = acceptedRequests.filter(
   el => ACLsDetaillees[el].ACLDetaillee.map(ACL => ACL.accesA).includes('traitementParticulier')
 );
-console.log(`requestsTraitementTresParticulier : ${requestsTraitementTresParticulier}`);
-console.log(`requestsTraitementParticulier : ${requestsTraitementParticulier}`);
+// console.log(`requestsTraitementTresParticulier : ${requestsTraitementTresParticulier}`);
+// console.log(`requestsTraitementParticulier : ${requestsTraitementParticulier}`);
 

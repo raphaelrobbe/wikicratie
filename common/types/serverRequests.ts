@@ -81,3 +81,57 @@ export interface DataGetLogsRequest extends DataJsonRequestBase {
   toNbSecondesPasse?: number;
   limit?: number;
 }
+
+
+// TABLE USER
+
+export interface DataConnectRequest extends DataJsonRequestBase {
+  requestType: 'connect';
+  user_login: string;
+  password: string;
+  idConseiller?: number;
+}
+export interface DataDemandeReinitPassword extends DataJsonRequestBase {
+  requestType: 'demandeReinitPassword';
+  userLoginOuEmail: string;
+  mail: { texte: string; html: string };
+}
+export interface DataHasUserAcces extends DataJsonRequestBase {
+  requestType: 'hasUserAcces';
+  idBasePropre: number;
+  typeUser: number;
+}
+// export interface DataHasConseillerAcces extends DataJsonRequestBase {
+//   requestType: 'hasConseillerAcces';
+//   idConseiller: number;
+// }
+export interface DataReinitPassword extends DataJsonRequestBase {
+  requestType: 'reinitPassword';
+  password: string;
+  jetonModifPassword: string;
+}
+export interface DataActivationCompte extends DataJsonRequestBase {
+  requestType: 'activationCompte';
+  password: string;
+  jetonModifPassword: string;
+}
+export interface DataModifPassword extends DataJsonRequestBase {
+  requestType: 'modifPassword';
+  oldPassword: string;
+  newPassword: string;
+}
+export interface DataGenereLienActivationCompte extends DataJsonRequestBase {
+  requestType: 'genereLienActivationCompte';
+  idBasePropre: number;
+  typeUser: number;
+  // user_login: string;
+}
+export interface DataCheckPassword {
+  user_login: string;
+  password: string;
+  useBaseLocale: boolean;
+}
+export interface DataAutoConnectRequest extends DataJsonRequestBase {
+  requestType: 'autoConnect';
+  idConseiller?: number;
+}

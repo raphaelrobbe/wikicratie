@@ -1,57 +1,55 @@
 import {
-  ConnectResponse, DisconnectResponse,
-  CheckPasswordResponse, DataCheckPassword, DataReinitPassword,
-  ReinitPasswordResponse, DataDemandeReinitPassword, DemandeReinitPasswordResponse,
-  InfosMail, ReplaceDuet, DataGenereLienActivationCompte, GenereLienActivationCompteResponse,
-  DataHasUserAcces, HasUserAccesResponse,
-} from '../../../common/types/main';
+  DataCheckPassword, DataReinitPassword,
+  DataDemandeReinitPassword,
+  DataGenereLienActivationCompte,
+  DataHasUserAcces,
+} from '../../../common/types/serverRequests';
 import {
-  infosMailVide,
-  stringCivNomPrenomToReplace,
-  stringLienReinitMdpToReplace,
-  nomSimuPourUrl,
-} from '../../../client/src/types/main';
+  HasUserAccesResponse,  DemandeReinitPasswordResponse,
+  GenereLienActivationCompteResponse,
+  ConnectResponse, DisconnectResponse,
+  CheckPasswordResponse,
+  ReinitPasswordResponse,
+} from '../../../common/types/serverResponses';
+
 import {
   sqlDelete, sqlInsert, sqlSelectAllFromTable, sqlSelectFromTable, sqlUpdate,
-} from 'sqlUtils';
-import {
-  getContraintesMdpNonRespectees,
-  hash,
-} from '../../../client/src/utils/utils';
+} from '../sqlRequests/basicRequests';
 import {
   CODE_ERREUR_CHECKPWD_COMPTE_INACTIVE,
   CODE_ERREUR_CHECKPWD_LOGIN_OU_MDP_INVALIDE,
   CODE_ERREUR_CHECKPWD_MUST_REINIT,
   CODE_ERREUR_CHECKPWD_PB_LECTURE_TABLE,
-  CODE_ERREUR_CHECKPWD_PLUSIEURS_CONSEILLERS,
+  CODE_ERREUR_CHECKPWD_PLUSIEURS_USERS,
   CODE_ERREUR_CHECKPWD_TROP_TENTATIVES_BLOQUE,
-  CODE_ERREUR_CREATE_TOKEN_AS_PB,
   CODE_ERREUR_CREATE_TOKEN_PB,
   DUREE_SECONDES_VALIDITE_TOKEN,
   MESSAGE_ERREUR_CHECKPWD_COMPTE_INACTIVE,
   MESSAGE_ERREUR_CHECKPWD_LOGIN_OU_MDP_INVALIDE,
   MESSAGE_ERREUR_CHECKPWD_PB_LECTURE_TABLE,
-  MESSAGE_ERREUR_CHECKPWD_PLUSIEURS_CONSEILLERS,
+  MESSAGE_ERREUR_CHECKPWD_PLUSIEURS_USERS,
   MESSAGE_ERREUR_CHECKPWD_TROP_TENTATIVES_BLOQUE,
-  MESSAGE_ERREUR_CREATE_TOKEN_AS_PB,
   MESSAGE_ERREUR_CREATE_TOKEN_PB,
-  TYPE_USER_CLIENT, TYPE_USER_PUBLIC,
-} from '../../../client/src/utils/constantes';
-import setCompteurTentativesLogin from 'setCompteurTentativesLogin';
-import updateJetonModifPassword from 'updateJetonModifPassword';
-import { STRING_PREFIXE_JETON } from 'mailing/utils';
-import completeEtEnvoieMail from 'completeEtEnvoieMail';
+} from '../../../client/src/utils/serverConstants';
 import { logger } from 'logger';
-import updateHashPwdUserViaJeton from 'updateHashPwdUserViaJeton';
-import { canUserAccessClient } from 'canUserAccessClient';
-import { canGerantAccessUser } from 'canGerantAccessUser';
-import { getNouveauJeton } from 'utils/utilSecure';
-import { getNomAdresseFromIdTypeUser } from 'getInfosBaseNPUtilisateur';
+import { hashSimple } from '../../../client/src/utils/utilRandom';
+import { TYPE_USER_PUBLIC } from '../../../client/src/utils/clientCommServerConstants';
+import { STRING_PREFIXE_JETON } from './constants';
+import { getContraintesMdpNonRespectees } from '../../../client/src/utils/mdp';
+import updateHashPwdUserViaJeton from './updateHashPwdUserViaJeton';
+import { getNomAdresseUser } from './getNomAdresseUser';
+import { InfosMail, ReplaceDuet } from '../../../common/types/mailing';
+import { infosMailVide, stringCivNomPrenomToReplace, stringLienReinitMdpToReplace } from 'types/mailing';
+import { getNouveauJeton } from './jetonSecure';
+import { prefixeUrl } from '../../../client/src/datas/paths';
+import updateJetonModifPassword from './updateJetonModifPassword';
+import setCompteurTentativesLogin from './setCompteurTentativesLogin';
+import completeEtEnvoieMail from 'mailing/completeEtEnvoieMail';
 
 
 export const refreshToken = async (token: string): Promise<boolean> => {
   const token_expires = Math.round(new Date().getTime()/1000 + DUREE_SECONDES_VALIDITE_TOKEN);
-  const hashJetonConnexion = hash(`${STRING_PREFIXE_JETON}${token}`);
+  const hashJetonConnexion = hashSimple(`${STRING_PREFIXE_JETON}${token}`);
 
   const retRefreshToken = await sqlUpdate(
     'jeton',
@@ -85,7 +83,7 @@ export const isTokenValid = async (token: string, ipAddress: string, useBaseLoca
     type_user_origine_as: TYPE_USER_PUBLIC,
   }
   // console.log(`jeton reçu : ${token}`);
-  const hashJetonConnexion = hash(`${STRING_PREFIXE_JETON}${token}`);
+  const hashJetonConnexion = hashSimple(`${STRING_PREFIXE_JETON}${token}`);
 
   const retGetTokenExpires = await sqlSelectFromTable(
     'jeton',
@@ -230,7 +228,7 @@ export const reinitPwdBase = async (
     return returnValue;
   }
 
-  const hashJetonModifPassword = hash(`${STRING_PREFIXE_JETON}${jetonModifPassword}`);
+  const hashJetonModifPassword = hashSimple(`${STRING_PREFIXE_JETON}${jetonModifPassword}`);
 
   if (getContraintesMdpNonRespectees(password).length > 0) {
     console.log(`Tentative de réinitialisation de mot de passe avec un mot de passe faible.`);
@@ -273,7 +271,7 @@ export const reinitPwdBase = async (
     return returnValue;
   }
 
-  const hashedPwd = hash(password);
+  const hashedPwd = hashSimple(password);
 
   const retUpdateHashPwd = await updateHashPwdUserViaJeton({ hashJetonModifPassword, hashedPwd, useBaseLocale });
   if (!retUpdateHashPwd.success) {
@@ -345,7 +343,7 @@ export const demandeReinitPwdBase = async (
   const typeUser = retGetUser[0].type_user;
 
   let avatar = '';
-  const destTo = [await getNomAdresseFromIdTypeUser(idBasePropre, typeUser, useBaseLocale)];
+  const destTo = [await getNomAdresseUser(idBasePropre, typeUser, useBaseLocale)];
 
 
   logger.info(`demande de réinit de mdp de ${destTo[0].label}`, {
@@ -364,7 +362,7 @@ export const demandeReinitPwdBase = async (
   }
 
   const jetonModifPassword = getNouveauJeton();
-  const hashJetonModifPassword = hash(`${STRING_PREFIXE_JETON}${jetonModifPassword}`);
+  const hashJetonModifPassword = hashSimple(`${STRING_PREFIXE_JETON}${jetonModifPassword}`);
 
   const retUpdateJetonModifPassword = await updateJetonModifPassword({
     hashJetonModifPassword,
@@ -378,8 +376,8 @@ export const demandeReinitPwdBase = async (
     const regexNomPrenom = new RegExp(stringCivNomPrenomToReplace, "g");
     const regexLienReinitMdp = new RegExp(stringLienReinitMdpToReplace, "g");
     const lienReinitMdp = useBaseLocale || process.env.NODE_ENV === 'development'
-      ? `http://localhost:3000${nomSimuPourUrl}/reinitMdp?j=${jetonModifPassword}`
-      : `https://raf-prag.com${nomSimuPourUrl}/reinitMdp?j=${jetonModifPassword}`;
+      ? `http://localhost:3000${prefixeUrl}/reinitMdp?j=${jetonModifPassword}`
+      : `https://raf-prag.com${prefixeUrl}/reinitMdp?j=${jetonModifPassword}`;
 
     const replaceDuets: ReplaceDuet[] = [
       { from: regexNomPrenom, to: destTo[0].label },
@@ -433,7 +431,7 @@ export const genereLienActivationCompte = async (
   console.log(`genereLienActivationCompte, idBasePropre = ${idBasePropre}, typeUser = ${typeUser}`);
 
   const jetonModifPassword = getNouveauJeton();
-  const hashJetonModifPassword = hash(`${STRING_PREFIXE_JETON}${jetonModifPassword}`);
+  const hashJetonModifPassword = hashSimple(`${STRING_PREFIXE_JETON}${jetonModifPassword}`);
 
   const retUpdateJetonModifPassword = await updateJetonModifPassword({
     hashJetonModifPassword,
@@ -447,8 +445,8 @@ export const genereLienActivationCompte = async (
     returnValue.message = retUpdateJetonModifPassword.message;
   } else {
     const lienActivationCompte = useBaseLocale || process.env.NODE_ENV === 'development'
-      ? `http://localhost:3000${nomSimuPourUrl}/activationCompte?j=${jetonModifPassword}`
-      : `https://ajnae.fr${nomSimuPourUrl}/activationCompte?j=${jetonModifPassword}`;
+      ? `http://localhost:3000${prefixeUrl}/activationCompte?j=${jetonModifPassword}`
+      : `https://ajnae.fr${prefixeUrl}/activationCompte?j=${jetonModifPassword}`;
     returnValue.jeton = jetonModifPassword;
     returnValue.lienActivationCompte = lienActivationCompte;
     returnValue.jetonExpiration = retUpdateJetonModifPassword.jetonExpiration ? retUpdateJetonModifPassword.jetonExpiration : 0;
@@ -477,7 +475,7 @@ export const checkPassword = async (
     useBaseLocale,
   } = reqBody;
 
-  const hashedPwd = hash(password);
+  const hashedPwd = hashSimple(password);
 
   const retGetUser = await sqlSelectAllFromTable(
     'user',
@@ -495,8 +493,8 @@ export const checkPassword = async (
     returnValue.codeErreur = CODE_ERREUR_CHECKPWD_LOGIN_OU_MDP_INVALIDE;
     return returnValue;
   } else if (retGetUser.length > 1) {
-    returnValue.message = MESSAGE_ERREUR_CHECKPWD_PLUSIEURS_CONSEILLERS;
-    returnValue.codeErreur = CODE_ERREUR_CHECKPWD_PLUSIEURS_CONSEILLERS;
+    returnValue.message = MESSAGE_ERREUR_CHECKPWD_PLUSIEURS_USERS;
+    returnValue.codeErreur = CODE_ERREUR_CHECKPWD_PLUSIEURS_USERS;
     return returnValue;
   }
 
@@ -595,7 +593,7 @@ export const createToken = async (
 
   if (codeErreur === CODE_ERREUR_CHECKPWD_MUST_REINIT) {
     const jetonModifPassword = getNouveauJeton();
-    const hashJetonModifPassword = hash(`${STRING_PREFIXE_JETON}${jetonModifPassword}`);
+    const hashJetonModifPassword = hashSimple(`${STRING_PREFIXE_JETON}${jetonModifPassword}`);
 
     const retUpdateJetonModifPassword = await updateJetonModifPassword({
       hashJetonModifPassword,
@@ -618,7 +616,7 @@ export const createToken = async (
       token,
       token_expires,
     } = getTokenTokenExpires();
-    const hashJetonConnexion = hash(`${STRING_PREFIXE_JETON}${token}`);
+    const hashJetonConnexion = hashSimple(`${STRING_PREFIXE_JETON}${token}`);
 
     const retCreateToken = await sqlInsert(
       'jeton',
@@ -651,7 +649,7 @@ export const revokeToken = async (token: string): Promise<DisconnectResponse> =>
     success: false,
     message: 'probleme revokeToken',
   };
-  const hashJetonConnexion = hash(`${STRING_PREFIXE_JETON}${token}`);
+  const hashJetonConnexion = hashSimple(`${STRING_PREFIXE_JETON}${token}`);
 
   const retDeleteJeton = await sqlDelete(
     'jeton',
