@@ -1,0 +1,50 @@
+.articles {
+  text-align: justify;
+}
+
+.articles .choix-article .list-group {
+  margin-bottom: 1rem;
+}
+.articles .titre-paragraphe {
+  font-weight: 800;
+  font-size: 1.3rem;
+}
+.articles .paragraphe.avec-audio {
+  cursor: pointer;
+}
+.articles h2 {
+  text-align: left;
+}
+.articles h2 .titre {
+  font-size: 1.8rem;
+}
+.articles h2 .description {
+  /* padding-left: 1rem; */
+  font-size: 1.5rem;
+}
+.articles .paragraphe.avec-audio:hover {
+  background-color: gainsboro;
+}
+.articles .paragraphe-intention {
+  font-style: italic;
+}
+.articles .titre-intention {
+  font-weight: bold;
+}
+
+.articles .texte-article .titre-description-article {
+  font-size: 1.5rem;
+}
+.articles .titre-description-article {
+  font-weight: bold;
+  font-size: 1rem;
+}
+.articles .texte-article .titre-description-article .description {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.articles .titre-description-article .description {
+  font-weight: normal;
+  font-size: 0.8rem;
+  text-align: left;
+}

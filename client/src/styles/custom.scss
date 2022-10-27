@@ -1,0 +1,94 @@
+// Custom.scss
+// Option B: Include parts of Bootstrap
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import '~bootstrap/scss/functions';
+
+// 2. Include any default variable overrides here
+
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import '~bootstrap/scss/variables';
+
+// 4. Include any default map overrides here
+
+// 5. Include remainder of required parts
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/root';
+
+// 6. Optionally include any other parts as needed
+@import '~bootstrap/scss/utilities'; // RR nécessaire pour buttons (au moins)
+// @import '~bootstrap/scss/reboot';
+// @import '~bootstrap/scss/type';
+// @import '~bootstrap/scss/images';
+// @import '~bootstrap/scss/containers';
+// @import '~bootstrap/scss/grid';
+// @import '~bootstrap/scss/helpers';
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/accordion';
+
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import '~bootstrap/scss/utilities/api';
+
+// 8. Add additional custom code here
+
+// .dark {
+//   /* redefine theme colors for dark theme */
+//   $primary: #012345;
+//   $secondary: #111111;
+//   $success: #222222;
+//   $dark: #000;
+  
+//   $theme-colors: (
+//     "primary": $primary,
+//     "secondary": $secondary,
+//     "success": $success,
+//     "danger": $danger,
+//     "info": $indigo,
+//     "dark": $dark,
+//     "light": $light,
+//   );
+
+//   /* redefine theme color variables */
+//   @each $color, $value in $theme-colors {
+//       --#{$variable-prefix}#{$color}: #{$value};
+//   }
+
+//   /* redefine theme color rgb vars (used for bg- colors) */
+//   $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+//   @each $color, $value in $theme-colors-rgb {
+//       --#{$variable-prefix}#{$color}-rgb: #{$value};
+//   }
+
+//   $body-color: #eeeeee;
+//   $body-bg: #263C5C;
+  
+//   --#{$variable-prefix}body-color: #{$body-color};
+//   --#{$variable-prefix}body-bg: #{$body-bg};
+  
+    
+//   .texte-article {
+//       > .accordion {
+//           padding-left: 2rem;
+//           padding-right: 2rem;
+//       }
+//   }
+//   .accordion.dernier-niveau .accordion-collapse:hover {
+//     //   background-color: var(--#{$variable-prefix}accordion-active-color);
+//       cursor: pointer;
+//       background-color: var(--#{$variable-prefix}body-bg);
+//       color: var(--#{$variable-prefix}body-color);
+//       // background-color: lighten($accordion-button-active-color, 80%);
+//     }
+//     .accordion.highlighted {
+//         h2.accordion-header {
+//             .accordion-button {
+//             background-color: lighten($accordion-button-active-color, 30%);
+//             // background-color: red;
+//         }
+//       } 
+//     // background-color: var(--bs-accordion-active-color);
+//   }
+//   @import "bootstrap";
+// }

@@ -1,0 +1,20 @@
+.lexique .card {
+  margin-bottom: 1rem;
+}
+.lexique .row.liste-mots-petit-ecran {
+  padding-left: calc(var(--bs-gutter-x) * .5);
+  padding-right: calc(var(--bs-gutter-x) * .5);
+}
+.lexique .row.recherche,
+.lexique .row.choix-lettre-grand-ecran {
+  padding-bottom: 1rem;
+}
+.lexique .card-body {
+  text-align: justify;
+}
+.lexique .list-group {
+  padding-left: calc(var(--bs-gutter-x) * .5);
+}
+.lexique .list-group a {
+  text-align: center;
+}
