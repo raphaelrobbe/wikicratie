@@ -9,6 +9,11 @@ package-lock.json
 # database
 database.js
 
+# répertoires sensibles
+/src/authentication
+/src/sqlRequests
+/src/accessControl
+
 # testing
 /coverage
 /testsPdf
