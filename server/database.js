@@ -15,6 +15,7 @@ const createPoolDistant = (host) => {
     queueLimit: 100,
   });
 }
+
 const createPoolLocal = (host) => {
   return mysql.createPool({
     connectionLimit: 10,
