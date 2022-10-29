@@ -13,7 +13,7 @@ export const GeneralNavBar: React.FC = () => {
       <Navbar collapseOnSelect expand="lg">
           <Navbar.Brand as={Link} to={'/'}>
             <img
-              src="./logo512.png"
+              src={`/logo512.png`}
               width="40"
               height="40"
               className="d-inline-block align-top"

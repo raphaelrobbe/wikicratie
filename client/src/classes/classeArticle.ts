@@ -60,6 +60,15 @@ export class SousArticle {
       this.audioElement.pause();
     }
   }
+  setPlaybackRate(rate: number) {
+    // console.log(`classe : playing the audio ??`);
+    if (this.audioElement) {
+      // console.log(`classe : YES !!! playing the audio`);
+      this.audioElement.playbackRate = rate;
+    } else {
+      // console.log(`classe : NOOOOO !!! not playing the audio`);
+    }
+  }
   playAudio() {
     // console.log(`classe : playing the audio ??`);
     if (this.audioElement) {

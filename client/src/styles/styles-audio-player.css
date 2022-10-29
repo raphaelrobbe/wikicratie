@@ -46,6 +46,14 @@
   margin-top: 0;
 }
 
+.audio-player .bouton-playback-rate button {
+  width: fit-content;
+  margin: auto;
+  border: none;
+}
+.audio-player .bouton-playback-rate {
+  margin-top: 0.2rem;
+}
 .audio-player div.conteneur-btn {
   padding: 0;
   font-size: 0.8rem;

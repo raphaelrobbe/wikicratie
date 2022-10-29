@@ -5,10 +5,10 @@ import RangeSlider from "react-bootstrap-range-slider";
 import { Article } from "../classes/classeArticle";
 import { ArticleAudioControls } from "./ArticleAudioControls";
 import { getAffichageFromSecondes } from "../utils/utilTime";
-import { Col, Row } from "react-bootstrap";
+import { Badge, Button, Col, Row } from "react-bootstrap";
 // import { ArticleTexte } from "./ArticleTexte";
-import { listeArticles } from "../datas/articles/listeArticles";
 import { useNavigate } from "react-router";
+import { availableSpeeds } from "../utils/audioConstants";
 
 interface AudioPlayerProps {
   highlightedParagraphe: Article | null;
@@ -33,12 +33,26 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   toPrev,
 }) => {
   // State
+  const [indexPlaybackRate, setIndexPlaybackRate] = useState(0);
   const [currentTimeSlider, setCurrentTimeSlider] = useState(0);
   const [trackProgress, setTrackProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState<number | null>(null);
 
   const navigate = useNavigate();
+
+  const nextSpeed = useCallback(() => {
+    setIndexPlaybackRate(p => (p + 1) % availableSpeeds.length)
+  }, [
+    setIndexPlaybackRate,
+  ]);
+
+  useEffect(() => {
+    articleEnCours.setPlaybackRate(availableSpeeds[indexPlaybackRate]);
+  }, [
+    articleEnCours,
+    indexPlaybackRate,
+  ])
 
   // Destructure for conciseness
   const {
@@ -196,35 +210,48 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
         {/* <Row className="audio-time-info">
         </Row> */}
         {isPlaying &&
-        <Row className="audio-time-info">
-          <Col
-            className="input-range"
-            sm={6}
+          <>
+          <Row
+            className={'bouton-playback-rate'}
           >
-            <RangeSlider
-              value={articleEnCours.audioElement!.currentTime}
-              tooltipLabel={
-                (value: number) => {
-                  return getAffichageFromSecondes(value === 0.1234
-                    ? null
-                    : value
-                  );
-                }
-              }
-              min={0}
-              max={duration ? duration : 100}
-              onChange={(e) => onScrub(parseInt(e.target.value))}
-              tooltipPlacement='bottom'
-              tooltip='on'
-            />
-          </Col>
-          <Col
-            className="duration"
-            sm={1}
-          >
-            {getAffichageFromSecondes(duration)}
-          </Col>
-        </Row>
+              <Badge
+                bg="secondary"
+                as={Button}
+                onClick={nextSpeed}
+              >
+                {`x ${availableSpeeds[indexPlaybackRate]}`}
+              </Badge>
+            </Row>
+            <Row className="audio-time-info">
+              <Col
+                className="input-range"
+                sm={6}
+              >
+                <RangeSlider
+                  value={articleEnCours.audioElement!.currentTime}
+                  tooltipLabel={
+                    (value: number) => {
+                      return getAffichageFromSecondes(value === 0.1234
+                        ? null
+                        : value
+                      );
+                    }
+                  }
+                  min={0}
+                  max={duration ? duration : 100}
+                  onChange={(e) => onScrub(parseInt(e.target.value))}
+                  tooltipPlacement='bottom'
+                  tooltip='on'
+                />
+              </Col>
+              <Col
+                className="duration"
+                sm={1}
+              >
+                {getAffichageFromSecondes(duration)}
+              </Col>
+            </Row>
+          </>
         }
         {/* <input
           type="range"
