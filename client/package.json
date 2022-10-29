@@ -2,7 +2,7 @@
   "name": "wikicratie_client",
   "version": "0.1.0",
   "description": "Wikicratie - Constitution Provisoire de Transition - Client",
-  "homepage": "https://raf-prag.com/CPT/",
+  "homepage": "/",
   "private": true,
   "proxy": "http://localhost:3001",
   "dependencies": {
