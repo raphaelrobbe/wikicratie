@@ -14,10 +14,10 @@ export const App: React.FC = () => {
       {/* <Container fluid> */}
         <GeneralNavBar />
         <Routes>
-          <Route
+          {/* <Route
             path={`${pathAudios}/*`}
             element={<AudiosArticlesWrapper />}
-          />
+          /> */}
           <Route
             path={`${pathArticles}/*`}
             element={<Articles />}

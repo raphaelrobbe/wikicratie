@@ -8,11 +8,13 @@ export const pathLexique = `${prefixeUrl}/lexique`;
 export const pathFAQ = `${prefixeUrl}/FAQ`;
 export const pathAudios = `${prefixeUrl}/audios`;
 
+export const pathFilesAudios = `/audios`;
+
 // export const pathRepertoireAudios = `./audios/`;
-// export const pathRepertoireAudios = `https://podcastme.fr/CPT/audios/`;
+export const pathRepertoireAudios = `http://podcastme.fr/audios/`;
 // export const pathRepertoireAudiosArticles = `./articles/`;
 // export const pathRepertoireAudiosArticles = `${pathRepertoireAudios}articles/`;
-export const pathRepertoireAudiosArticles = `${pathAudios}/articles/`;
+export const pathRepertoireAudiosArticles = `${pathFilesAudios}/articles/`;
 
 
 
