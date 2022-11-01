@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './styles/articles.css';
 import { Col, Container, ListGroup, Row, Tab } from 'react-bootstrap';
 import { AfficheParagraphe } from './AfficheParagraphe';
-import { listeArticles } from './datas/articles/listeArticles';
+// import { listeArticles } from './datas/articles/listeArticles';
 import { AudiosArticlesWrapper } from './AudiosArticlesWrapper';
 import { useArticlesContext } from './contexts/ArticlesContext';
 import { ArticleTitreDescription } from './ArticleTitreDescription';
@@ -10,23 +10,31 @@ import { ArticleTitreDescription } from './ArticleTitreDescription';
 export const Articles: React.FC = () => {
   const {
     directToArticle,
+    articles,
     indexArticleEnCours,
   } = useArticlesContext();
 
-  const [key, setKey] = useState(`#${listeArticles[0].numero}`);
+  const keyArticleDefault = useMemo(() => {
+    return articles.length > 0 ? `#${articles[0].numero}` : ``;
+  }, [articles]);
+
+  const [key, setKey] = useState(keyArticleDefault);
 
   useEffect(() => {
-    setKey(`#${listeArticles[indexArticleEnCours].numero}`)
+    if (indexArticleEnCours < articles.length) {
+      setKey(`#${articles[indexArticleEnCours].numero}`)
+    }
   }, [
+    articles,
     indexArticleEnCours,
   ])
 
   return (
     <div className="articles">
       <Container>
-        {listeArticles.length > 0 &&
+        {articles.length > 0 &&
           <Tab.Container
-            defaultActiveKey={`#${listeArticles[0].numero}`}
+            defaultActiveKey={`#${articles[0].numero}`}
             activeKey={key}
           >
             <Row
@@ -38,7 +46,7 @@ export const Articles: React.FC = () => {
               >
                 <AudiosArticlesWrapper />
                 <ListGroup>
-                  {listeArticles.map((el, i) => {
+                  {articles.map((el, i) => {
                     const {
                       titre,
                       description,
@@ -64,7 +72,7 @@ export const Articles: React.FC = () => {
                 <AudiosArticlesWrapper />
                 <ListGroup
                 >
-                  {listeArticles.map((el, i) => {
+                  {articles.map((el, i) => {
                     const {
                       titre,
                       description,
@@ -87,7 +95,7 @@ export const Articles: React.FC = () => {
                 className={'texte-article'}
               >
                 <Tab.Content>
-                  {listeArticles.map((el, i) => {
+                  {articles.map((el, i) => {
                     const {
                       titre,
                       description,

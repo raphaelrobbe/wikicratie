@@ -2,7 +2,7 @@ import { NomRequete } from "../../../common/types/serverRequests";
 import {
   TYPE_USER_ADMIN, TYPE_USER_PUBLIC,
   TYPE_USER_UTILISATEUR, TYPE_USER_VISITEUR,
-} from "./clientCommServerConstants";
+} from "./constants/clientCommServerConstants";
 
 export const ACLAdmin = [
   TYPE_USER_ADMIN,
@@ -133,6 +133,7 @@ export const ACLsDetaillees: ListeACLsDetaillees = {
   activationCompte: ACLDetailleePublic,
   // cas non connecté, mot de passe oublié
   demandeReinitPassword: ACLDetailleePublic,
+  publicDataLoading: ACLDetailleePublic,
 
   //////////////////////
   // VISITEURS

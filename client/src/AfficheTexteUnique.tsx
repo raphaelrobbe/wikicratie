@@ -16,7 +16,7 @@ export const AfficheTexteUnique: React.FC<AfficheTexteUniqueProps> = ({
   } = useArticlesContext();
 
   const handleClick = (): void => {
-    if (tempsDepart !== undefined) {
+    if (articleEnCours && tempsDepart !== undefined) {
       articleEnCours.setAudioCurrentTime(tempsDepart)
     }
   }

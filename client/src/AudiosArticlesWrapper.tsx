@@ -15,7 +15,7 @@ export const AudiosArticlesWrapper: React.FC<AudiosArticlesWrapperProps> = ({
     highlightedParagraphe,
   } = useArticlesContext();
 
-  return (articleEnCours.audioElement
+  return (articleEnCours && articleEnCours.audioElement
     ? <AudioPlayer
       highlightedParagraphe={highlightedParagraphe}
       articleEnCours={articleEnCours}

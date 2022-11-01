@@ -8,7 +8,7 @@ import { getAffichageFromSecondes } from "../utils/utilTime";
 import { Badge, Button, Col, Row } from "react-bootstrap";
 // import { ArticleTexte } from "./ArticleTexte";
 import { useNavigate } from "react-router";
-import { availableSpeeds } from "../utils/audioConstants";
+import { availableSpeeds } from "../utils/constants/audioConstants";
 
 interface AudioPlayerProps {
   highlightedParagraphe: Article | null;

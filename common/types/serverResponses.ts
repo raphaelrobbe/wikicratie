@@ -1,3 +1,5 @@
+import { Article } from "../../client/src/classes/classeArticle";
+
 export interface ServerResponse {
   success: boolean;
   message: string;
@@ -40,4 +42,7 @@ export interface CheckPasswordResponse extends ServerResponse {
 export interface UpdateHashPwdUserResponse extends ServerResponse {
   typeUsager: number;
   jetonExpiration?: number;
+}
+export interface PublicDataLoadingResponse extends ServerResponse {
+  articles: Article[];
 }

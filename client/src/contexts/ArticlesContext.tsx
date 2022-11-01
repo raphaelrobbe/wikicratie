@@ -7,8 +7,9 @@ import { listeArticles } from '../datas/articles/listeArticles';
 
 interface ArticlesContextProps {
   articles: Article[];
+  setArticles: React.Dispatch<React.SetStateAction<Article[]>>;
   articlePrecedent: Article | null;
-  articleEnCours: Article;
+  articleEnCours: Article | null;
   articleSuivant: Article | null;
   indexArticleEnCours: number;
   // setIndexArticleEnCours: React.Dispatch<React.SetStateAction<number>>;
@@ -30,20 +31,25 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
 }) => {
   const [playAuto, setPlayAuto] = useState(false);
   const [indexArticleEnCours, setIndexArticleEnCours] = useState(0);
-  const [articles, setArticles] = useState([...listeArticles]);
+  const [articles, setArticles] = useState<Article[]>([]);
+  // const [articles, setArticles] = useState([...listeArticles]);
   const [highlightedParagraphe, setHighlightedParagraphe] = useState<Article | null>(null);
 
-  const articleEnCours = useMemo((): Article => {
-    const _art = articles[indexArticleEnCours];
-    _art.getAndSetAudioElementIfDontExist();
-    return _art;
+  const articleEnCours = useMemo((): Article | null => {
+    if (articles.length > 0) {
+      const _art = articles[indexArticleEnCours];
+      _art.getAndSetAudioElementIfDontExist();
+      return _art;
+    } else {
+      return null;
+    }
   }, [
     indexArticleEnCours,
     articles,
   ]);
 
   useEffect(() => {
-    if (playAuto) {
+    if (playAuto && articleEnCours) {
       articleEnCours.playAudio();
     }
   }, [
@@ -63,7 +69,7 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
     indexArticleEnCours,
     articles,
   ]);
-  
+
   const articlePrecedent = useMemo((): Article | null => {
     if (indexArticleEnCours > 0) {
       const _art = articles[indexArticleEnCours - 1];
@@ -102,7 +108,9 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
       play = false,
       loop = false,
     } = props;
-    articleEnCours.pauseAndRembobine();
+    if (articleEnCours) {
+      articleEnCours.pauseAndRembobine();
+    }
     // setPlayAuto(play);
     setIndexArticleEnCours(i => getNextIndex(i, loop));
   }, [
@@ -116,7 +124,9 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
       loop = false,
     } = props;
     // setPlayAuto(play);
-    articleEnCours.pauseAndRembobine();
+    if (articleEnCours) {
+      articleEnCours.pauseAndRembobine();
+    }
     setIndexArticleEnCours(i => getPrevIndex(i, loop));
   }, [
     getPrevIndex,
@@ -129,7 +139,9 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
       play = false,
     } = props;
     // setPlayAuto(play);
-    articleEnCours.pauseAndRembobine();
+    if (articleEnCours) {
+      articleEnCours.pauseAndRembobine();
+    }
     if (index >= 0 && index < articles.length) {
       setIndexArticleEnCours(i => index);
     }
@@ -140,7 +152,7 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
 
   return <ArticlesContext.Provider value={{
     indexArticleEnCours,
-    articles,
+    articles, setArticles,
     articleEnCours,
     articlePrecedent,
     articleSuivant,

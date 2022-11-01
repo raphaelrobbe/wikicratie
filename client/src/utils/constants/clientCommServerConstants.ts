@@ -1,4 +1,4 @@
-import { MessageChargement } from '../../../common/types/clientCommServer';
+import { MessageChargement } from "../../../../common/types/clientCommServer";
 
 export const messagesLoader: MessageChargement = {
   connect:`Authentification...`,

@@ -15,7 +15,11 @@ export interface User extends UserSansId {
 
 export type ConnectedUser = {
   token: string;
-  token_original: string;
   type_user: number;
   user: User;
 };
+
+export type SiteLS = {
+  connectedUser: ConnectedUser;
+  nbOpenedConnectedTabs: number;
+}

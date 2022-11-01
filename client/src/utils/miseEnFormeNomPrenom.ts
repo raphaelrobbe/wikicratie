@@ -1,3 +1,5 @@
+import { Civilite } from "../../../common/types/users";
+
 export const valueMonsieur = 'M.';
 export const valueMadame = 'Mme';
 // export const optionsCivilite: OptionsParam[] = [
@@ -6,9 +8,12 @@ export const valueMadame = 'Mme';
 // ];
 
 /**
- * Rend une chaîne de caractère du style "Raphaël Robbe", ou "Mme Jeannette Dupont" ou "Chers Jean et Jeanne Durand"
- * @param _client objet (si undefined, retourne retourDefaut) contenant les clés civilite nom prenom et éventuellement civlite2, nom2 et prenom2
- * @param avecCivilite si false : pas de civilité, si true, civilité, si 'cher', Cher ou Chère ou Chers ou Chères avec virgule à la fin
+ * Rend une chaîne de caractère du style "Raphaël Robbe", ou "Mme Jeannette Dupont"
+ * ou "Chers Jean et Jeanne Durand"
+ * @param _client objet (si undefined, retourne retourDefaut) contenant les clés civilite
+ * nom prenom et éventuellement civlite2, nom2 et prenom2
+ * @param avecCivilite si false : pas de civilité, si true, civilité, si 'cher',
+ * Cher ou Chère ou Chers ou Chères avec virgule à la fin
  * @param retourDefaut valeur de retour si _client undefined
  * @returns la chaîne, retourDefaut si paramètre _client undefined
  */
@@ -28,7 +33,7 @@ const optsVides: GetNPOptionsProps = {
 };
 
 export interface GetNPProps {
-  civilite?: string;
+  civilite?: Civilite;
   nom: string;
   prenom: string;
 }
@@ -53,7 +58,7 @@ export const getNPUtilisateur = (
     nom,
     prenom,
   } = _client;
-  if (!(civilite === ''
+  if (!(civilite === undefined
     && prenom === ''
     && nom === ''
   )) {
@@ -62,7 +67,7 @@ export const getNPUtilisateur = (
     //   stringFinal1.push(civilite === valueMadame ? 'Chère' : 'Cher');
     // }
     if (avecCivilite) {
-      stringFinal1.push(civilite === valueMadame ? valueMadame : valueMonsieur);
+      stringFinal1.push(civilite === 2 ? valueMadame : valueMonsieur);
     }
     if (avecPrenom && prenom !== '') {
       stringFinal1.push(prenom);
@@ -77,7 +82,7 @@ export const getNPUtilisateur = (
 
     const nP1 = stringFinal1.join(' ');
     if (avecCher) {
-      ret = `${civilite === valueMadame ? `Chère ` : `Cher `}${nP1},`;
+      ret = `${civilite === 2 ? `Chère ` : `Cher `}${nP1},`;
     } else {
       ret = nP1;
     }

@@ -6,6 +6,7 @@ export type NomRequete =
   | 'connect'
   | 'activationCompte'
   | 'demandeReinitPassword'
+  | 'publicDataLoading'
 
   // avec token
   // connexion
@@ -91,12 +92,12 @@ export interface DataConnectRequest extends DataJsonRequestBase {
   password: string;
   idConseiller?: number;
 }
-export interface DataDemandeReinitPassword extends DataJsonRequestBase {
+export interface DataDemandeReinitPasswordRequest extends DataJsonRequestBase {
   requestType: 'demandeReinitPassword';
   userLoginOuEmail: string;
   mail: { texte: string; html: string };
 }
-export interface DataHasUserAcces extends DataJsonRequestBase {
+export interface DataHasUserAccesRequest extends DataJsonRequestBase {
   requestType: 'hasUserAcces';
   idBasePropre: number;
   typeUser: number;
@@ -105,22 +106,22 @@ export interface DataHasUserAcces extends DataJsonRequestBase {
 //   requestType: 'hasConseillerAcces';
 //   idConseiller: number;
 // }
-export interface DataReinitPassword extends DataJsonRequestBase {
+export interface DataReinitPasswordRequest extends DataJsonRequestBase {
   requestType: 'reinitPassword';
   password: string;
   jetonModifPassword: string;
 }
-export interface DataActivationCompte extends DataJsonRequestBase {
+export interface DataActivationCompteRequest extends DataJsonRequestBase {
   requestType: 'activationCompte';
   password: string;
   jetonModifPassword: string;
 }
-export interface DataModifPassword extends DataJsonRequestBase {
+export interface DataModifPasswordRequest extends DataJsonRequestBase {
   requestType: 'modifPassword';
   oldPassword: string;
   newPassword: string;
 }
-export interface DataGenereLienActivationCompte extends DataJsonRequestBase {
+export interface DataGenereLienActivationCompteRequest extends DataJsonRequestBase {
   requestType: 'genereLienActivationCompte';
   idBasePropre: number;
   typeUser: number;
@@ -135,3 +136,21 @@ export interface DataAutoConnectRequest extends DataJsonRequestBase {
   requestType: 'autoConnect';
   idConseiller?: number;
 }
+export interface DataPublicDataLoadingRequest extends DataJsonRequestBase {
+  requestType: 'publicDataLoading';
+  isPdfGeneration: boolean;
+}
+
+
+
+
+export type DataJsonRequest =
+  | DataConnectRequest
+  | DataDemandeReinitPasswordRequest
+  | DataHasUserAccesRequest
+  | DataReinitPasswordRequest
+  | DataActivationCompteRequest
+  | DataModifPasswordRequest
+  | DataGenereLienActivationCompteRequest
+  | DataAutoConnectRequest
+  | DataPublicDataLoadingRequest;

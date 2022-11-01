@@ -1,3 +1,5 @@
+/*eslint no-bitwise: ["error", { "allow": ["<<", "|="] }] */
+
 export interface StrRandomProps {
     includeUpperCase: boolean;
     includeNumbers: boolean;

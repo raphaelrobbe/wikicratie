@@ -1,4 +1,5 @@
 import { NomModuleNiveau1 } from "../../../common/types/structureUrls";
+import { urlBaseWebsite } from "../utils/constants/project";
 
 export const prefixeUrl = `/CPT`;
 
@@ -11,7 +12,7 @@ export const pathAudios = `${prefixeUrl}/audios`;
 export const pathFilesAudios = `/audios`;
 
 // export const pathRepertoireAudios = `./audios/`;
-export const pathRepertoireAudios = `http://podcastme.fr/audios/`;
+export const pathRepertoireAudios = `${urlBaseWebsite}/audios/`;
 // export const pathRepertoireAudiosArticles = `./articles/`;
 // export const pathRepertoireAudiosArticles = `${pathRepertoireAudios}articles/`;
 export const pathRepertoireAudiosArticles = `${pathFilesAudios}/articles/`;

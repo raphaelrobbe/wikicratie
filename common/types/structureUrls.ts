@@ -3,3 +3,8 @@ export type NomModuleNiveau1 =
   | 'articles'
   | 'FAQ'
   | 'lexique';
+
+export interface PieceOfBreadCrumbsProps {
+  label: string;
+  chemin: string;
+}

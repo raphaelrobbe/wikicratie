@@ -8,6 +8,13 @@ import * as serviceWorker from './serviceWorker';
 import { disableReactDevTools } from './disableReactDevTools';
 import { App } from './App';
 import { ArticlesContextProvider } from './contexts/ArticlesContext';
+import { GlobalContextProvider } from './contexts/GlobalContext';
+import { PdfContextProvider } from './contexts/PdfContext';
+import { BreadCrumbsContextProvider } from './contexts/BreadCrumbsContext';
+import PublicDataLoader from './DataLoader';
+import { KeyboardContextProvider } from './contexts/KeyboardContext';
+import { ConnexionContextProvider } from './contexts/ConnexionContext';
+import { PopupContextProvider } from './contexts/PopupContext';
 
 const rootElement = ReactDOM.createRoot(document.getElementById('root') as Element);
 
@@ -17,9 +24,22 @@ if (process.env.NODE_ENV === "production") {
 
 rootElement.render(
   <BrowserRouter>
-    <ArticlesContextProvider>
-    <App />
-    </ArticlesContextProvider>
+    <KeyboardContextProvider>
+      <PdfContextProvider>
+        <GlobalContextProvider>
+          <PopupContextProvider>
+            <ConnexionContextProvider>
+              <BreadCrumbsContextProvider>
+                <ArticlesContextProvider>
+                  <App />
+                  <PublicDataLoader />
+                </ArticlesContextProvider>
+              </BreadCrumbsContextProvider>
+            </ConnexionContextProvider>
+          </PopupContextProvider>
+        </GlobalContextProvider>
+      </PdfContextProvider>
+    </KeyboardContextProvider>
   </BrowserRouter>
 );
 

@@ -1,5 +1,5 @@
-import { User } from "../../../common/types/users";
-import { TYPE_USER_PUBLIC } from "../utils/clientCommServerConstants";
+import { ConnectedUser, User } from "../../../common/types/users";
+import { TYPE_USER_PUBLIC } from "../utils/constants/clientCommServerConstants";
 
 export const userDefault: User = {
   id_user: -1,
@@ -10,4 +10,9 @@ export const userDefault: User = {
   nom: '',
   prenom: '',
   type_user: TYPE_USER_PUBLIC,
+}
+export const connectedUserDefault: ConnectedUser = {
+  token: '',
+  type_user: TYPE_USER_PUBLIC,
+  user: userDefault,
 }
