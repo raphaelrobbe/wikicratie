@@ -15,7 +15,7 @@ const PublicDataLoader: React.FC = () => {
     pdfGeneration,
   } = usePdfContext();
   const {
-    setArticles,
+    initialiseArticles,
   } = useArticlesContext();
 
   const getPublicDataLoadingFailure = (
@@ -30,7 +30,7 @@ const PublicDataLoader: React.FC = () => {
 
     // BASE ARTICLES
     if (ret.articles) {
-      setArticles(ret.articles);
+      initialiseArticles(ret.articles);
     }
 
     setPublicDataLoadingFini(true);

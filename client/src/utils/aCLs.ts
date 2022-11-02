@@ -143,12 +143,13 @@ export const ACLsDetaillees: ListeACLsDetaillees = {
   // effacement du local storage fait par le client dans tous les cas
   disconnect: ACLDetailleeVisiteur,
   autoConnect: ACLDetailleeVisiteur,
-  chargementDonnees: ACLDetailleeVisiteur,
+
 
   //////////////////////
   // les NON VISITEUR et NON PUBLIC
   // = utilisateurs connextés
   //////////////////////
+  userDataLoading: ACLDetailleeConnecteCompte,
   modifPassword: ACLDetailleeConnecteCompte,
 
   // MAIL

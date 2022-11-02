@@ -11,7 +11,7 @@ export type NomRequete =
   // avec token
   // connexion
   | 'autoConnect'
-  | 'chargementDonnees'
+  | 'userDataLoading'
   | 'disconnect'
   | 'reinitPassword'
   | 'modifPassword'

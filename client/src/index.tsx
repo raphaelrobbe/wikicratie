@@ -11,7 +11,6 @@ import { ArticlesContextProvider } from './contexts/ArticlesContext';
 import { GlobalContextProvider } from './contexts/GlobalContext';
 import { PdfContextProvider } from './contexts/PdfContext';
 import { BreadCrumbsContextProvider } from './contexts/BreadCrumbsContext';
-import PublicDataLoader from './DataLoader';
 import { KeyboardContextProvider } from './contexts/KeyboardContext';
 import { ConnexionContextProvider } from './contexts/ConnexionContext';
 import { PopupContextProvider } from './contexts/PopupContext';
@@ -32,7 +31,6 @@ rootElement.render(
               <BreadCrumbsContextProvider>
                 <ArticlesContextProvider>
                   <App />
-                  <PublicDataLoader />
                 </ArticlesContextProvider>
               </BreadCrumbsContextProvider>
             </ConnexionContextProvider>

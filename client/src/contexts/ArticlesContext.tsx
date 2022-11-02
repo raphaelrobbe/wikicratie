@@ -2,12 +2,13 @@ import React, {
   PropsWithChildren, useCallback,
   useContext, useEffect, useMemo, useState,
 } from 'react';
-import { Article } from '../classes/classeArticle';
+import { Article, SousArticle } from '../classes/classeArticle';
 import { listeArticles } from '../datas/articles/listeArticles';
 
 interface ArticlesContextProps {
   articles: Article[];
-  setArticles: React.Dispatch<React.SetStateAction<Article[]>>;
+  initialiseArticles: (arts: Article[]) => void;
+  // setArticles: React.Dispatch<React.SetStateAction<Article[]>>;
   articlePrecedent: Article | null;
   articleEnCours: Article | null;
   articleSuivant: Article | null;
@@ -35,8 +36,32 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
   // const [articles, setArticles] = useState([...listeArticles]);
   const [highlightedParagraphe, setHighlightedParagraphe] = useState<Article | null>(null);
 
+  const initialiseArticles = (arts: Article[]) => {
+    const _articles: Article[] = [];
+    for (let i = 0; i < arts.length; i += 1) {
+      const _art = arts[i];
+      const newArt = new Article(
+        _art.titre,
+        _art.numero,
+        _art.paragraphes,
+        _art.tempsDepart,
+        _art.sousArticles,
+        _art.audioPath,
+        _art.indexSelectedPara,
+        _art.description,
+        _art.audioElement,
+        _art.imagePath,
+        _art.pdfPath,
+        _art.highlighted,
+        _art.dateDerniereModif,
+      );
+      _articles.push(newArt);
+    }
+    setArticles(_articles);
+  }
+
   const articleEnCours = useMemo((): Article | null => {
-    if (articles.length > 0) {
+    if (indexArticleEnCours < articles.length) {
       const _art = articles[indexArticleEnCours];
       _art.getAndSetAudioElementIfDontExist();
       return _art;
@@ -71,7 +96,7 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
   ]);
 
   const articlePrecedent = useMemo((): Article | null => {
-    if (indexArticleEnCours > 0) {
+    if (indexArticleEnCours > 0 && indexArticleEnCours - 1 < articles.length) {
       const _art = articles[indexArticleEnCours - 1];
       _art.getAndSetAudioElementIfDontExist();
       return _art;
@@ -152,7 +177,7 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
 
   return <ArticlesContext.Provider value={{
     indexArticleEnCours,
-    articles, setArticles,
+    articles, initialiseArticles,
     articleEnCours,
     articlePrecedent,
     articleSuivant,
