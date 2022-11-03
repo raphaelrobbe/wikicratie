@@ -9,18 +9,22 @@ import { Articles } from './Articles';
 import { FAQ } from './FAQ';
 import PublicDataLoader from './DataLoader';
 import { useGlobalContext } from './contexts/GlobalContext';
+import { usePdfContext } from './contexts/PdfContext';
 
 export const App: React.FC = () => {
   const {
     publicDataLoadingFini,
   } = useGlobalContext();
+  const {
+    pdfGeneration,
+  } = usePdfContext();
 
   return (
     <>
       {!publicDataLoadingFini && <PublicDataLoader />}
 
       {/* <Container fluid> */}
-      <GeneralNavBar />
+      {!pdfGeneration && <GeneralNavBar />}
       <Routes>
         {/* <Route
             path={`${pathAudios}/*`}

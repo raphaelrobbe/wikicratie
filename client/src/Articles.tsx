@@ -6,6 +6,7 @@ import { AfficheParagraphe } from './AfficheParagraphe';
 import { AudiosArticlesWrapper } from './AudiosArticlesWrapper';
 import { useArticlesContext } from './contexts/ArticlesContext';
 import { ArticleTitreDescription } from './ArticleTitreDescription';
+import { usePdfContext } from './contexts/PdfContext';
 
 export const Articles: React.FC = () => {
   const {
@@ -13,6 +14,9 @@ export const Articles: React.FC = () => {
     articles,
     indexArticleEnCours,
   } = useArticlesContext();
+  const {
+    pdfGeneration,
+  } = usePdfContext();
 
   const keyArticleDefault = useMemo(() => {
     return articles.length > 0 ? `#${articles[0].numero}` : ``;
@@ -44,7 +48,7 @@ export const Articles: React.FC = () => {
                 xl={2}
                 className={'d-block d-xl-none affichage-petit-ecran choix-article'}
               >
-                <AudiosArticlesWrapper />
+                {!pdfGeneration && <AudiosArticlesWrapper />}
                 <ListGroup>
                   {articles.map((el, i) => {
                     const {
@@ -69,7 +73,7 @@ export const Articles: React.FC = () => {
                 sm={2}
                 className={'d-none d-xl-block affichage-grand-ecran choix-article'}
               >
-                <AudiosArticlesWrapper />
+                {!pdfGeneration && <AudiosArticlesWrapper />}
                 <ListGroup
                 >
                   {articles.map((el, i) => {

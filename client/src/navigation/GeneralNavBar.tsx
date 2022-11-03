@@ -9,7 +9,7 @@ export const GeneralNavBar: React.FC = () => {
     <div
       className="general-navbar"
     >
-        <Container>
+      <Container>
       <Navbar collapseOnSelect expand="lg">
           <Navbar.Brand as={Link} to={'/'}>
             <img
