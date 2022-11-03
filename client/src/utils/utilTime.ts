@@ -40,7 +40,7 @@ export const getAffichageFromMinSec = (minSec: MinutesSecondes): string => {
 export const getDateMaxParaArray = (paras: Paragraphe[]): Date => {
   return [
       ...(paras.map(p => getDateMaxPara(p))),
-    ].reduce((c, n) => n < c ? n : c);
+    ].reduce((c, n) => n < c ? n : c, new Date());
 }
 export const getDateMaxPara = (para: Paragraphe): Date => {
   if (!Array.isArray(para.texte)) {

@@ -1,9 +1,28 @@
-import { NumeroArticle, Paragraphe } from "../../../common/types/typesArticles";
+import { NumeroArticle, Paragraphe, ParagrapheServeur } from "../../../common/types/typesArticles";
+import { ARTICLE_STATE_DRAFT } from "../utils/constants/articles";
 import { getDateMaxParaArray } from "../utils/utilTime";
+
+export interface SousArticleServeur {
+  id_article: number,
+  titre: string, // text
+  numero: NumeroArticle, // VARCHAR(45)
+  paragraphes: ParagrapheServeur[],
+  tempsDepart: number,
+  audioPath: string | null,
+  description: string | null,
+  imagePath: string | null,
+  pdfPath: string | null,
+  dateDerniereModif: Date,
+  state: number;
+}
+export interface ArticleServeur extends SousArticleServeur {
+  sousArticles: SousArticleServeur[] | null;
+}
 
 export class SousArticle {
   constructor (
-    public titre: string |JSX.Element,
+    public id_article: number,
+    public titre: string | JSX.Element,
     public numero: NumeroArticle,
     public paragraphes: Paragraphe[],
     public tempsDepart: number,
@@ -17,7 +36,9 @@ export class SousArticle {
     public pdfPath: string | null = null,
     public highlighted: boolean = false,
     public dateDerniereModif: Date = new Date(),
+    public state: number = ARTICLE_STATE_DRAFT,
     ) {
+    this.id_article = id_article;
     this.paragraphes = paragraphes;
     this.tempsDepart = tempsDepart;
     this.dateDerniereModif = getDateMaxParaArray(paragraphes),
@@ -32,6 +53,7 @@ export class SousArticle {
     this.pdfPath = pdfPath;
     // this.sousArticles = sousArticles;
     this.highlighted = false;
+    this.state = state;
   };
 
   getAndSetAudioElementIfDontExist() {
@@ -114,6 +136,7 @@ export class SousArticle {
 
 export class Article extends SousArticle {
   constructor(
+    public id_article: number,
     public titre: string | JSX.Element,
     public numero: NumeroArticle,
     public paragraphes: Paragraphe[],
@@ -128,8 +151,10 @@ export class Article extends SousArticle {
     public pdfPath: string | null = null,
     public highlighted: boolean = false,
     public dateDerniereModif: Date = new Date(),
+    public state: number = ARTICLE_STATE_DRAFT,
   ) {
     super(
+      id_article,
       titre,
       numero,
       paragraphes,
@@ -142,6 +167,7 @@ export class Article extends SousArticle {
       pdfPath,
       highlighted,
       dateDerniereModif,
+      state,
       );
     this.sousArticles = sousArticles;
     this.dateDerniereModif = getDateMaxParaArray(

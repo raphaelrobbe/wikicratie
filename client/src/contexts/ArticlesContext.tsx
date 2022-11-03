@@ -2,12 +2,14 @@ import React, {
   PropsWithChildren, useCallback,
   useContext, useEffect, useMemo, useState,
 } from 'react';
-import { Article, SousArticle } from '../classes/classeArticle';
-import { listeArticles } from '../datas/articles/listeArticles';
+import { Article, ArticleServeur, SousArticle } from '../classes/classeArticle';
+import { pathRepertoireAudiosArticles } from '../datas/paths';
+import { getParagraphesFromParagraphesServeur } from '../utils/security/articleConversion';
+import { SecuredDivFromString } from '../utils/security/secureDOM';
 
 interface ArticlesContextProps {
   articles: Article[];
-  initialiseArticles: (arts: Article[]) => void;
+  initialiseArticles: (arts: ArticleServeur[]) => void;
   // setArticles: React.Dispatch<React.SetStateAction<Article[]>>;
   articlePrecedent: Article | null;
   articleEnCours: Article | null;
@@ -36,23 +38,51 @@ export const ArticlesContextProvider: React.FC<PropsWithChildren> = ({
   // const [articles, setArticles] = useState([...listeArticles]);
   const [highlightedParagraphe, setHighlightedParagraphe] = useState<Article | null>(null);
 
-  const initialiseArticles = (arts: Article[]) => {
+  const initialiseArticles = (arts: ArticleServeur[]) => {
     const _articles: Article[] = [];
     for (let i = 0; i < arts.length; i += 1) {
       const _art = arts[i];
+      const _sousArtsServeur = _art.sousArticles;
+      const _sousArticles: SousArticle[] = [];
+      for (let indexSA = 0; _sousArtsServeur && indexSA < _sousArtsServeur.length; indexSA += 1) {
+        const _sousArtServeur = _sousArtsServeur[indexSA];
+        const newSousArt = new SousArticle(
+          _sousArtServeur.id_article,
+          <SecuredDivFromString
+            valueString={_sousArtServeur.titre}
+            classes={['titre-sous-article']}
+          />,
+          _sousArtServeur.numero,
+          getParagraphesFromParagraphesServeur(_sousArtServeur.paragraphes),
+          _sousArtServeur.tempsDepart,
+          `${pathRepertoireAudiosArticles}${_sousArtServeur.audioPath}`,
+          null,
+          _sousArtServeur.description,
+          null,
+          _sousArtServeur.imagePath,
+          _sousArtServeur.pdfPath,
+          false,
+          _sousArtServeur.dateDerniereModif,
+        );
+        _sousArticles.push(newSousArt);
+      }
       const newArt = new Article(
-        _art.titre,
+        _art.id_article,
+        <SecuredDivFromString
+          valueString={_art.titre}
+          classes={['titre-article']}
+        />,
         _art.numero,
-        _art.paragraphes,
+        getParagraphesFromParagraphesServeur(_art.paragraphes),
         _art.tempsDepart,
-        _art.sousArticles,
-        _art.audioPath,
-        _art.indexSelectedPara,
+        _sousArticles,
+        `${pathRepertoireAudiosArticles}${_art.audioPath}`,
+        null,
         _art.description,
-        _art.audioElement,
+        null,
         _art.imagePath,
         _art.pdfPath,
-        _art.highlighted,
+        false,
         _art.dateDerniereModif,
       );
       _articles.push(newArt);

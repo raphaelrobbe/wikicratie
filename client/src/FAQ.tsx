@@ -6,6 +6,7 @@ import { AfficheParagraphe } from './AfficheParagraphe';
 import { listeQuestions } from './datas/FAQ/listeQuestions';
 import { getWordWithoutAccents } from './utils/utilString';
 import { Paragraphe } from '../../common/types/typesArticles';
+import { DOMPurifySanitize } from './utils/security/secureDOM';
 
 type ChercherDans = 'titre' | 'texte';
 
@@ -99,7 +100,7 @@ export const FAQ: React.FC = () => {
                   type="search"
                   placeholder="Rechercher..."
                   aria-label="Search"
-                  onChange={(val) => setTexteRecherche(val.currentTarget.value)}
+                  onChange={(val) => setTexteRecherche(DOMPurifySanitize(val.currentTarget.value))}
                 />
               </Form>
             </Col>

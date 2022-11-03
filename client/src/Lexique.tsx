@@ -3,6 +3,7 @@ import './styles/lexique.css';
 import { Card, Container, Form, ListGroup, Row, Tab } from 'react-bootstrap';
 import { getLexiqueByLetter, glossaire } from './datas/lexique/lexique';
 import { getWordWithoutAccents } from './utils/utilString';
+import { DOMPurifySanitize } from './utils/security/secureDOM';
 
 export const Lexique: React.FC = () => {
   const [texteRecherche, setTexteRecherche] = useState('');
@@ -30,7 +31,7 @@ export const Lexique: React.FC = () => {
                   type="search"
                   placeholder="Rechercher..."
                   aria-label="Search"
-                  onChange={(val) => setTexteRecherche(val.currentTarget.value)}
+                  onChange={(val) => setTexteRecherche(DOMPurifySanitize(val.currentTarget.value))}
                 />
               </Form>
             </Row>

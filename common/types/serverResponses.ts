@@ -1,4 +1,5 @@
-import { Article } from "../../client/src/classes/classeArticle";
+import { Article, ArticleServeur } from "../../client/src/classes/classeArticle";
+import { ParagrapheServeur } from "./typesArticles";
 
 export interface ServerResponse {
   success: boolean;
@@ -44,5 +45,11 @@ export interface UpdateHashPwdUserResponse extends ServerResponse {
   jetonExpiration?: number;
 }
 export interface PublicDataLoadingResponse extends ServerResponse {
-  articles: Article[];
+  articles: ArticleServeur[];
+}
+export interface GetArticlesResponse extends ServerResponse {
+  articles: ArticleServeur[];
+}
+export interface GetParagraphesResponse extends ServerResponse {
+  paragraphes: ParagrapheServeur[];
 }

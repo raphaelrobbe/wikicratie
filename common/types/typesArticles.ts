@@ -1,6 +1,15 @@
 import { numerosArticles, numerosArticlesOld } from "../../client/src/datas/numerosArticles";
 
+export interface ParagrapheServeur {
+  id_paragraphe: number;
+  texte: string | ParagrapheServeur[];
+  tempsDepart?: number;
+  dateDerniereModif: Date;
+  titre?: string,
+  type?: 'intention' | 'note'; // udnefied = normal
+}
 export interface Paragraphe {
+  id_paragraphe: number;
   texte: string | JSX.Element | Paragraphe[];
   tempsDepart?: number;
   dateDerniereModif: Date;

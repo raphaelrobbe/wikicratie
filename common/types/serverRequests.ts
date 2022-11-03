@@ -142,6 +142,13 @@ export interface DataPublicDataLoadingRequest extends DataJsonRequestBase {
 }
 
 
+export interface DataGetArticles extends DataRequeteInterneServeur {
+}
+export interface DataGetParagraphes extends DataRequeteInterneServeur {
+  id_article: number;
+}
+
+
 
 
 export type DataJsonRequest =
