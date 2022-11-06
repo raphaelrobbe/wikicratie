@@ -9,8 +9,21 @@
   font-weight: 800;
   font-size: 1.3rem;
 }
+.articles .paragraphe.avec-audio .boutons-pargraphe-overlay {
+  display: none;
+  position: absolute;
+  width: fit-content;
+  top: -3rem;
+  left: 0rem;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.articles .paragraphe.avec-audio:hover .boutons-pargraphe-overlay {
+  display: block;
+}
 .articles .paragraphe.avec-audio {
-  cursor: pointer;
+  transition: 0.2s;
+  position: relative;
+  /* cursor: pointer; */
 }
 .articles h2 {
   text-align: left;

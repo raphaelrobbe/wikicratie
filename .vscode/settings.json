@@ -1,0 +1,10 @@
+{
+  "search.useIgnoreFiles": false,
+  "files.exclude": {
+    "**/bundle.js": true,
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/build/*": true
+  }
+}

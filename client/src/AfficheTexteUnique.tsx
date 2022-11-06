@@ -1,5 +1,5 @@
 import React from 'react';
-import { useArticlesContext } from './contexts/ArticlesContext';
+import { BoutonsParagraphe } from './BoutonsParagraphe';
 
 interface AfficheTexteUniqueProps {
   texte: string | JSX.Element;
@@ -11,25 +11,18 @@ export const AfficheTexteUnique: React.FC<AfficheTexteUniqueProps> = ({
   isTitre = false,
   tempsDepart,
 }) => {
-  const {
-    articleEnCours,
-  } = useArticlesContext();
-
-  const handleClick = (): void => {
-    if (articleEnCours && tempsDepart !== undefined) {
-      articleEnCours.setAudioCurrentTime(tempsDepart)
-    }
-  }
 
   return (
     <div
-      className={([] as string[])
+      className={(['rounded', 'p-1'] as string[])
         .concat(isTitre ? 'titre-paragraphe' : 'paragraphe')
         .concat(tempsDepart !== undefined ? 'avec-audio' : '')
         .join(' ')
       }
-      onClick={handleClick}
     >
+      <BoutonsParagraphe
+          tempsDepart={tempsDepart}
+      />
       {typeof texte === 'string'
         ? <p>{texte}</p>
         : texte

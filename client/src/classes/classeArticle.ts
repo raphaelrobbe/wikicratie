@@ -19,49 +19,16 @@ export interface ArticleServeur extends SousArticleServeur {
   sousArticles: SousArticleServeur[] | null;
 }
 
-export class SousArticle {
+export class ObjectWithAudioElement {
   constructor (
-    public id_article: number,
-    public titre: string | JSX.Element,
-    public numero: NumeroArticle,
-    public paragraphes: Paragraphe[],
-    public tempsDepart: number,
-    public audioPath: string | null = null,
-    public indexSelectedPara: number | null = null,
-    public description: string | null = null,
-    // public intention: Paragraphe[] | null = null, -> transformé en type intention dans paragraphe
-    // public sousArticles: Article[] = [],
     public audioElement: HTMLAudioElement | null = null,
-    public imagePath: string | null = null,
-    public pdfPath: string | null = null,
-    public highlighted: boolean = false,
-    public dateDerniereModif: Date = new Date(),
-    public state: number = ARTICLE_STATE_DRAFT,
-    ) {
-    this.id_article = id_article;
-    this.paragraphes = paragraphes;
-    this.tempsDepart = tempsDepart;
-    this.dateDerniereModif = getDateMaxParaArray(paragraphes),
-    this.numero = numero;
-    this.titre = titre;
-    this.indexSelectedPara = indexSelectedPara;
-    this.description = description;
-    // this.intention = intention;
-    this.imagePath = imagePath;
-    this.audioPath = audioPath;
+    public titre: string | JSX.Element,
+    public description: string | null = null,
+  ) {
     this.audioElement = audioElement;
-    this.pdfPath = pdfPath;
-    // this.sousArticles = sousArticles;
-    this.highlighted = false;
-    this.state = state;
-  };
-
-  getAndSetAudioElementIfDontExist() {
-    if (!this.audioElement && this.audioPath) {
-      this.audioElement = new Audio(this.audioPath);
-    }
+    this.titre = titre;
+    this.description = description;
   }
-
   setAudioCurrentTime(time: number) {
     if (this.audioElement) {
       this.audioElement.currentTime = time;
@@ -71,6 +38,7 @@ export class SousArticle {
 
   pauseAudio() {
     if (this.audioElement) {
+      this.audioElement.textTracks;
       this.audioElement.pause();
     }
   }
@@ -87,6 +55,19 @@ export class SousArticle {
     if (this.audioElement) {
       // console.log(`classe : YES !!! playing the audio`);
       this.audioElement.playbackRate = rate;
+    } else {
+      // console.log(`classe : NOOOOO !!! not playing the audio`);
+    }
+  }
+  togglePlayPauseAudio() {
+    // console.log(`classe : playing the audio ??`);
+    if (this.audioElement) {
+      // console.log(`classe : YES !!! playing the audio`);
+      if (this.audioElement.paused) {
+        this.audioElement.play();
+      } else {
+        this.audioElement.pause();
+      }
     } else {
       // console.log(`classe : NOOOOO !!! not playing the audio`);
     }
@@ -129,6 +110,54 @@ export class SousArticle {
   removeEventListener(event: keyof HTMLMediaElementEventMap, _func: () => void) {
     if (this.audioElement) {
       this.audioElement.removeEventListener(event, _func);
+    }
+  }
+}
+export class SousArticle extends ObjectWithAudioElement {
+  constructor (
+    public id_article: number,
+    public titre: string | JSX.Element,
+    public numero: NumeroArticle,
+    public paragraphes: Paragraphe[],
+    public tempsDepart: number,
+    public audioPath: string | null = null,
+    public indexSelectedPara: number | null = null,
+    public description: string | null = null,
+    // public intention: Paragraphe[] | null = null, -> transformé en type intention dans paragraphe
+    // public sousArticles: Article[] = [],
+    public audioElement: HTMLAudioElement | null = null,
+    public imagePath: string | null = null,
+    public pdfPath: string | null = null,
+    public highlighted: boolean = false,
+    public dateDerniereModif: Date = new Date(),
+    public state: number = ARTICLE_STATE_DRAFT,
+  ) {
+    super(
+      audioElement,
+      titre,
+      description,
+    )
+    this.id_article = id_article;
+    this.paragraphes = paragraphes;
+    this.tempsDepart = tempsDepart;
+    this.dateDerniereModif = getDateMaxParaArray(paragraphes),
+    this.numero = numero;
+    // this.titre = titre;
+    this.indexSelectedPara = indexSelectedPara;
+    this.description = description;
+    // this.intention = intention;
+    this.imagePath = imagePath;
+    this.audioPath = audioPath;
+    // this.audioElement = audioElement;
+    this.pdfPath = pdfPath;
+    // this.sousArticles = sousArticles;
+    this.highlighted = false;
+    this.state = state;
+  };
+
+  getAndSetAudioElementIfDontExist() {
+    if (!this.audioElement && this.audioPath) {
+      this.audioElement = new Audio(this.audioPath);
     }
   }
 };
