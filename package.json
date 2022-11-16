@@ -4,18 +4,15 @@
   "description": "Wikicratie - Constitution Provisoire de Transition - Projet global",
   "scripts": {
     "startdev": "concurrently \"npm run serverdev\" \"npm run clientdev\"",
-    "startdevwin": "concurrently \"npm run serverdevwin\" \"npm run clientdevwin\"",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "serverdev": "cd server && npm run dev",
-    "serverdevwin": "cd server && npm run devwin",
     "server": "cd server && npm start",
     "client": "cd client && npm start",
     "clientdev": "cd client && npm run dev",
-    "clientdevwin": "cd client && npm run devwin",
     "build": "cd client && npm run build && cd ../server && npm run build",
     "buildClient": "cd client && npm run build",
     "buildServer": "cd server && npm run build",
-    "postinstall": "(cd server && npm install); (cd client && npm install)"
+    "postinstall": "cd server && npm install && cd ../client && npm install"
   },
   "engines": {
     "node": "12.x",
